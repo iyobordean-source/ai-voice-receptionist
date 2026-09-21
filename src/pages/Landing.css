@@ -58,14 +58,14 @@
 .ambient-field__noise {
   position: absolute;
   inset: 0;
-  opacity: 0.04;
+  opacity: 0.035;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
   mix-blend-mode: screen;
 }
 
 .ambient-field__grid {
   position: absolute;
-  opacity: 0.05;
+  opacity: 0.045;
 }
 
 .ambient-field__grid--horizontal {
@@ -106,19 +106,19 @@
 
 .ambient-field__ring--one {
   width: min(72vw, 900px);
-  animation: ambient-ring 18s linear infinite;
+  animation: ambient-ring 22s linear infinite;
 }
 
 .ambient-field__ring--two {
   width: min(52vw, 660px);
-  border-color: rgba(255, 255, 255, 0.055);
-  animation: ambient-ring-reverse 24s linear infinite;
+  border-color: rgba(255, 255, 255, 0.05);
+  animation: ambient-ring-reverse 30s linear infinite;
 }
 
 .ambient-field__ring--three {
   width: min(34vw, 430px);
-  border-color: rgba(32, 200, 120, 0.1);
-  animation: ambient-ring 30s linear infinite;
+  border-color: rgba(32, 200, 120, 0.09);
+  animation: ambient-ring 36s linear infinite;
 }
 
 .ambient-field__signal {
@@ -126,22 +126,22 @@
   width: 150%;
   height: 160px;
   left: -25%;
-  border-top: 1px solid rgba(32, 200, 120, 0.08);
-  border-bottom: 1px solid rgba(32, 200, 120, 0.025);
+  border-top: 1px solid rgba(32, 200, 120, 0.07);
+  border-bottom: 1px solid rgba(32, 200, 120, 0.02);
   border-radius: 50%;
   transform: rotate(-8deg);
 }
 
 .ambient-field__signal--one {
   top: 38%;
-  animation: signal-drift 18s ease-in-out infinite alternate;
+  animation: signal-drift 24s ease-in-out infinite alternate;
 }
 
 .ambient-field__signal--two {
   top: 51%;
-  opacity: 0.5;
+  opacity: 0.45;
   transform: rotate(8deg);
-  animation: signal-drift-reverse 23s ease-in-out infinite alternate;
+  animation: signal-drift-reverse 30s ease-in-out infinite alternate;
 }
 
 .ambient-field__node {
@@ -150,9 +150,9 @@
   height: 4px;
   border-radius: 50%;
   background: var(--landing-green);
-  opacity: 0.5;
-  box-shadow: 0 0 20px rgba(32, 200, 120, 0.5);
-  animation: node-pulse 5s ease-in-out infinite;
+  opacity: 0.45;
+  box-shadow: 0 0 14px rgba(32, 200, 120, 0.4);
+  animation: node-pulse 6s ease-in-out infinite;
 }
 
 .ambient-field__node--one {
@@ -222,12 +222,12 @@
   0%,
   100% {
     opacity: 0.15;
-    transform: scale(0.7);
+    transform: scale(0.8);
   }
 
   50% {
-    opacity: 0.9;
-    transform: scale(1.5);
+    opacity: 0.8;
+    transform: scale(1.35);
   }
 }
 
@@ -253,7 +253,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--landing-green);
-  box-shadow: 0 0 14px rgba(32, 200, 120, 0.65);
+  box-shadow: 0 0 12px rgba(32, 200, 120, 0.55);
 }
 
 .section-number {
@@ -278,15 +278,15 @@
   font-weight: 650;
   text-decoration: none;
   transition:
-    transform 250ms ease,
-    background 250ms ease,
-    box-shadow 250ms ease;
+    transform 220ms ease,
+    background 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .cta-button:hover {
   transform: translateY(-2px);
   background: #35d789;
-  box-shadow: 0 16px 40px rgba(32, 200, 120, 0.14);
+  box-shadow: 0 12px 30px rgba(32, 200, 120, 0.12);
 }
 
 /* =========================================================
@@ -314,7 +314,7 @@
     rgba(32, 200, 120, 0.035) 28%,
     transparent 68%
   );
-  filter: blur(12px);
+  filter: blur(10px);
   pointer-events: none;
 }
 
@@ -401,7 +401,7 @@
   z-index: 4;
   width: min(100%, 530px);
   transform: rotate(-1.2deg);
-  animation: hero-card-float 7s ease-in-out infinite;
+  animation: hero-card-float 8s ease-in-out infinite;
 }
 
 .hero__visual-label {
@@ -461,7 +461,7 @@
   }
 
   50% {
-    transform: rotate(0deg) translateY(-12px);
+    transform: rotate(0deg) translateY(-10px);
   }
 }
 
@@ -490,9 +490,9 @@
 .hero-orb__outer {
   border: 1px solid rgba(32, 200, 120, 0.14);
   box-shadow:
-    0 0 80px rgba(32, 200, 120, 0.045),
-    inset 0 0 80px rgba(32, 200, 120, 0.025);
-  animation: orb-spin 32s linear infinite;
+    0 0 60px rgba(32, 200, 120, 0.035),
+    inset 0 0 60px rgba(32, 200, 120, 0.02);
+  animation: orb-spin 38s linear infinite;
 }
 
 .hero-orb__middle {
@@ -500,7 +500,7 @@
   border: 1px solid rgba(255, 255, 255, 0.075);
   border-left-color: rgba(32, 200, 120, 0.3);
   border-right-color: rgba(32, 200, 120, 0.04);
-  animation: orb-spin-reverse 24s linear infinite;
+  animation: orb-spin-reverse 30s linear infinite;
 }
 
 .hero-orb__inner {
@@ -524,9 +524,9 @@
   border-radius: 50%;
   background: rgba(2, 8, 5, 0.72);
   box-shadow:
-    0 0 50px rgba(32, 200, 120, 0.08),
-    inset 0 0 35px rgba(32, 200, 120, 0.05);
-  backdrop-filter: blur(8px);
+    0 0 40px rgba(32, 200, 120, 0.07),
+    inset 0 0 30px rgba(32, 200, 120, 0.045);
+  backdrop-filter: blur(5px);
 }
 
 .hero-orb__core-line {
@@ -557,7 +557,7 @@
     from 0deg,
     transparent 0deg,
     transparent 280deg,
-    rgba(32, 200, 120, 0.35) 320deg,
+    rgba(32, 200, 120, 0.3) 320deg,
     transparent 345deg
   );
   mask: radial-gradient(
@@ -566,7 +566,7 @@
     #000 65.5% 66.5%,
     transparent 67%
   );
-  animation: orb-scan 8s linear infinite;
+  animation: orb-scan 10s linear infinite;
 }
 
 @keyframes orb-spin {
@@ -595,8 +595,8 @@
   opacity: 0;
   transform: translateY(40px);
   transition:
-    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 [data-reveal].is-visible {
@@ -824,7 +824,7 @@
   display: flex;
   width: max-content;
   gap: 44px;
-  animation: knowledge-scroll 32s linear infinite;
+  animation: knowledge-scroll 40s linear infinite;
 }
 
 .knowledge__track span {
@@ -890,8 +890,8 @@
   min-height: 120px;
   border-bottom: 1px solid var(--landing-border);
   transition:
-    padding 300ms ease,
-    background 300ms ease;
+    padding 260ms ease,
+    background 260ms ease;
 }
 
 .capability:hover {
@@ -932,8 +932,8 @@
   color: rgba(244, 247, 245, 0.28);
   font-size: 1.15rem;
   transition:
-    transform 250ms ease,
-    color 250ms ease;
+    transform 220ms ease,
+    color 220ms ease;
 }
 
 .capability:hover .capability__arrow {
@@ -976,19 +976,19 @@
 }
 
 .final__orb div:nth-child(1) {
-  animation: orb-spin 18s linear infinite;
+  animation: orb-spin 24s linear infinite;
 }
 
 .final__orb div:nth-child(2) {
   inset: 20%;
   border-color: rgba(255, 255, 255, 0.08);
-  animation: orb-spin-reverse 14s linear infinite;
+  animation: orb-spin-reverse 20s linear infinite;
 }
 
 .final__orb div:nth-child(3) {
   inset: 40%;
   background: rgba(32, 200, 120, 0.08);
-  box-shadow: 0 0 45px rgba(32, 200, 120, 0.1);
+  box-shadow: 0 0 35px rgba(32, 200, 120, 0.08);
 }
 
 .final__title {
@@ -1064,65 +1064,207 @@
 
 @media (max-width: 700px) {
   .hero {
-    padding: 92px 0 40px;
+    min-height: auto;
+    padding: 86px 0 34px;
   }
 
+  /*
+    Mobile gets a real single-column composition.
+    The desktop grid is not allowed to squeeze the copy.
+  */
+
   .hero__inner {
-    gap: 10px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0 20px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .hero__copy {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero__eyebrow {
+    margin-bottom: 20px;
   }
 
   .hero__title {
-    max-width: 9.8ch;
-    font-size: clamp(2.65rem, 12vw, 4.3rem);
-    letter-spacing: -0.06em;
+    width: 100%;
+    max-width: 12ch;
+    margin: 0;
+
+    font-size: clamp(2.45rem, 10.5vw, 3.35rem);
     line-height: 0.97;
+    letter-spacing: -0.06em;
   }
 
   .hero__subtitle {
-    max-width: 42ch;
-    font-size: 0.96rem;
+    width: 100%;
+    max-width: 35ch;
+    margin-top: 24px;
+
+    font-size: 0.93rem;
+    line-height: 1.65;
   }
 
   .hero__actions {
-    align-items: flex-start;
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 18px;
+
+    margin-top: 30px;
   }
 
+  .hero__secondary {
+    font-size: 0.85rem;
+  }
+
+  /*
+    Visual sits directly after the CTA.
+    This keeps the first screen feeling like one composition.
+  */
+
   .hero__visual {
-    min-height: 440px;
-    margin-top: 10px;
+    width: 100%;
+    min-height: 410px;
+    margin-top: 26px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .hero__call {
-    width: 100%;
+    width: min(100%, 520px);
+    max-width: 520px;
     transform: none;
+    animation: none;
+  }
+
+  .hero-orb {
+    width: min(94vw, 470px);
+    max-width: 470px;
+    left: 50%;
+    top: 50%;
+  }
+
+  .hero__visual-label {
+    font-size: 0.6rem;
   }
 
   .hero__visual-label--top {
-    top: 8%;
-    right: 0;
+    top: 7%;
+    right: 2px;
   }
 
   .hero__visual-label--bottom {
     bottom: 7%;
-    left: 0;
-  }
-
-  .hero-orb {
-    width: 92vw;
-    max-width: 480px;
+    left: 2px;
   }
 
   .hero__bottom {
     position: relative;
     right: auto;
     bottom: auto;
+
+    width: 100%;
     justify-content: center;
-    margin-top: 25px;
-    padding: 0 20px;
-    font-size: 0.56rem;
+    box-sizing: border-box;
+
+    margin-top: 12px;
+    padding: 0 18px;
+
+    gap: 8px;
+    font-size: 0.5rem;
+    letter-spacing: 0.11em;
   }
+
+  .hero__bottom i {
+    width: 10px;
+  }
+
+  /* -------------------------------------------------------
+     MOBILE PERFORMANCE
+  ------------------------------------------------------- */
+
+  .ambient-field__noise {
+    display: none;
+  }
+
+  .ambient-field__grid {
+    opacity: 0.02;
+  }
+
+  .ambient-field__grid--vertical {
+    display: none;
+  }
+
+  .ambient-field__signal {
+    display: none;
+  }
+
+  .ambient-field__ring--one {
+    width: 120vw;
+    animation-duration: 40s;
+  }
+
+  .ambient-field__ring--two {
+    width: 88vw;
+    animation-duration: 50s;
+  }
+
+  .ambient-field__ring--three {
+    width: 60vw;
+    animation-duration: 60s;
+  }
+
+  .ambient-field__node {
+    box-shadow: none;
+    animation-duration: 8s;
+  }
+
+  .ambient-field__node--three,
+  .ambient-field__node--four {
+    display: none;
+  }
+
+  .hero__glow {
+    width: 440px;
+    height: 440px;
+    left: 50%;
+    filter: none;
+    opacity: 0.7;
+  }
+
+  .hero-orb__outer {
+    box-shadow: none;
+    animation-duration: 50s;
+  }
+
+  .hero-orb__middle {
+    animation-duration: 42s;
+  }
+
+  .hero-orb__core {
+    backdrop-filter: none;
+    box-shadow: 0 0 24px rgba(32, 200, 120, 0.06);
+  }
+
+  .hero-orb__scan {
+    animation-duration: 14s;
+  }
+
+  /* -------------------------------------------------------
+     OTHER SECTIONS
+  ------------------------------------------------------- */
 
   .problem,
   .receptionist,
@@ -1138,6 +1280,7 @@
   }
 
   .problem__statement {
+    max-width: 17ch;
     font-size: clamp(2.25rem, 10vw, 3.6rem);
   }
 
@@ -1172,6 +1315,10 @@
 
   .knowledge__marquee {
     margin-top: 75px;
+  }
+
+  .knowledge__track {
+    animation-duration: 50s;
   }
 
   .capabilities__title {
@@ -1214,20 +1361,12 @@
     font-size: clamp(2.65rem, 11vw, 4.2rem);
   }
 
-  .ambient-field__grid {
-    opacity: 0.025;
+  .final__orb div:nth-child(1) {
+    animation-duration: 35s;
   }
 
-  .ambient-field__ring--one {
-    width: 120vw;
-  }
-
-  .ambient-field__ring--two {
-    width: 90vw;
-  }
-
-  .ambient-field__ring--three {
-    width: 62vw;
+  .final__orb div:nth-child(2) {
+    animation-duration: 28s;
   }
 }
 
@@ -1237,23 +1376,44 @@
 
 @media (max-width: 390px) {
   .hero {
-    padding-top: 80px;
+    padding-top: 76px;
+  }
+
+  .hero__inner {
+    padding-left: 18px;
+    padding-right: 18px;
   }
 
   .hero__title {
+    max-width: 11.5ch;
     font-size: 2.55rem;
   }
 
+  .hero__subtitle {
+    max-width: 34ch;
+    font-size: 0.9rem;
+  }
+
+  .hero__actions {
+    gap: 16px;
+  }
+
   .hero__visual {
-    min-height: 385px;
+    min-height: 380px;
+    margin-top: 24px;
+  }
+
+  .hero__visual-label {
+    font-size: 0.56rem;
   }
 
   .hero__bottom {
-    gap: 7px;
+    gap: 6px;
+    font-size: 0.46rem;
   }
 
   .hero__bottom i {
-    width: 10px;
+    width: 8px;
   }
 
   .receptionist__states span {
