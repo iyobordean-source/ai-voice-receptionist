@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import "./CallPreview.css";
 
 const HERO_WAVEFORM = [
-  18, 34, 62, 28, 82, 46, 24, 70,
-  38, 58, 20, 48, 76, 32, 56, 25,
-  44, 68, 30, 52, 22, 42, 64, 34,
+  18, 38, 62, 28, 82, 46, 24, 70,
+  42, 58, 22, 48, 76, 32, 56, 34,
+  64,
 ];
 
 const SHOWCASE_WAVEFORM = [
