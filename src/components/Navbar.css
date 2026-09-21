@@ -1,0 +1,346 @@
+/* ========================================
+   NAVBAR
+======================================== */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.navbar__inner {
+  min-height: 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 32px;
+}
+
+/* ========================================
+   BRAND
+======================================== */
+
+.navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #f5f5f2;
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+
+  white-space: nowrap;
+}
+
+.navbar__mark {
+  width: 22px;
+  height: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.navbar__mark span {
+  width: 3px;
+  border-radius: 999px;
+
+  background: #8cffb0;
+
+  transform-origin: center;
+}
+
+.navbar__mark span:nth-child(1) {
+  height: 8px;
+}
+
+.navbar__mark span:nth-child(2) {
+  height: 14px;
+}
+
+.navbar__mark span:nth-child(3) {
+  height: 18px;
+}
+
+.navbar__mark span:nth-child(4) {
+  height: 11px;
+}
+
+/* ========================================
+   DESKTOP LINKS
+======================================== */
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+
+  margin-left: auto;
+  margin-right: 12px;
+}
+
+.navbar__links a {
+  color: rgba(245, 245, 242, 0.58);
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 450;
+  letter-spacing: -0.01em;
+
+  transition:
+    color 180ms ease,
+    opacity 180ms ease;
+}
+
+.navbar__links a:hover {
+  color: #f5f5f2;
+}
+
+/* ========================================
+   ACTIONS
+======================================== */
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navbar__login {
+  color: rgba(245, 245, 242, 0.72);
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  transition: color 180ms ease;
+}
+
+.navbar__login:hover {
+  color: #fff;
+}
+
+.navbar__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+  padding: 0 17px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.94);
+  color: #080808;
+
+  text-decoration: none;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.navbar__cta:hover {
+  transform: translateY(-1px);
+  background: #fff;
+}
+
+/* ========================================
+   MOBILE MENU BUTTON
+======================================== */
+
+.navbar__menu {
+  display: none;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+  border: 0;
+
+  background: transparent;
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+
+  cursor: pointer;
+}
+
+.navbar__menu span {
+  width: 19px;
+  height: 1px;
+
+  background: #f5f5f2;
+
+  transition:
+    transform 220ms ease,
+    opacity 180ms ease;
+}
+
+.navbar__menu--open span:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.navbar__menu--open span:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (max-width: 850px) {
+  .navbar__inner {
+    min-height: 70px;
+  }
+
+  .navbar__links {
+    gap: 22px;
+  }
+
+  .navbar__actions {
+    gap: 12px;
+  }
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 700px) {
+  .navbar {
+    background: rgba(0, 0, 0, 0.72);
+  }
+
+  .navbar__inner {
+    position: relative;
+
+    min-height: 68px;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    flex-wrap: wrap;
+  }
+
+  .navbar__brand {
+    font-size: 13px;
+  }
+
+  .navbar__mark {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Hide desktop layout */
+
+  .navbar__menu {
+    display: flex;
+    margin-left: auto;
+  }
+
+  .navbar__links,
+  .navbar__actions {
+    display: none;
+  }
+
+  /* ====================================
+     OPEN MOBILE PANEL
+  ==================================== */
+
+  .navbar__links--open,
+  .navbar__actions--open {
+    display: flex;
+    width: 100%;
+  }
+
+  .navbar__links--open {
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 0;
+
+    margin: 0;
+    padding: 16px 0 4px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .navbar__links--open a {
+    width: 100%;
+    padding: 15px 0;
+
+    font-size: 15px;
+    color: rgba(245, 245, 242, 0.72);
+  }
+
+  .navbar__actions--open {
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 0;
+    padding: 12px 0 20px;
+  }
+
+  .navbar__actions--open .navbar__login {
+    flex: 1;
+
+    min-height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+
+    font-size: 14px;
+  }
+
+  .navbar__actions--open .navbar__cta {
+    flex: 1;
+
+    min-height: 44px;
+
+    font-size: 14px;
+  }
+}
+
+/* ========================================
+   SMALL PHONES
+======================================== */
+
+@media (max-width: 430px) {
+  .navbar__inner {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .navbar__brand span:last-child {
+    max-width: 150px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

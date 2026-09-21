@@ -1,0 +1,105 @@
+.signal-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.signal-field__wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  fill: none;
+  stroke-width: 1.4;
+}
+
+.signal-field__wave path {
+  vector-effect: non-scaling-stroke;
+}
+
+.signal-field__wave--a {
+  stroke: var(--accent);
+  opacity: 0.16;
+  animation: signal-drift-left 46s linear infinite;
+}
+
+.signal-field__wave--b {
+  stroke: var(--text);
+  opacity: 0.05;
+  animation: signal-drift-right 60s linear infinite;
+  top: 8%;
+}
+
+.signal-field__wave--c {
+  stroke: var(--accent);
+  opacity: 0.07;
+  animation: signal-drift-left 34s linear infinite;
+  top: -6%;
+}
+
+@keyframes signal-drift-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes signal-drift-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.signal-field__node {
+  position: absolute;
+  left: var(--x);
+  top: 48%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  animation: signal-pulse 4.5s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes signal-pulse {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  15%,
+  35% {
+    opacity: 0.9;
+    transform: scale(1.6);
+    box-shadow: 0 0 12px 2px rgba(32, 200, 120, 0.35);
+  }
+  55% {
+    opacity: 0;
+    transform: scale(0.6);
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-field__wave,
+  .signal-field__node {
+    animation: none !important;
+  }
+
+  .signal-field__wave--a {
+    opacity: 0.1;
+  }
+
+  .signal-field__node {
+    opacity: 0.5;
+  }
+}
