@@ -33,10 +33,22 @@ function Navbar() {
           <a href="#who-its-for" onClick={closeMenu}>
             Who it's for
           </a>
+
+          <Link
+            to="/dashboard"
+            className="navbar__mobile-dashboard"
+            onClick={closeMenu}
+          >
+            Dashboard
+          </Link>
         </div>
 
         <div className="navbar__actions">
-          <Link to="/Dashboard" className="navbar__dashboard">
+          <Link
+            to="/dashboard"
+            className="navbar__dashboard"
+            onClick={closeMenu}
+          >
             Dashboard
           </Link>
         </div>
