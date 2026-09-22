@@ -209,7 +209,7 @@ function Landing() {
               </p>
 
               <div className="hero__actions">
-                <Link to="/signup" className="cta-button">
+                <Link to="/Dashboard" className="cta-button">
                   Get started
                 </Link>
 
