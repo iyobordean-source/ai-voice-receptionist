@@ -36,7 +36,7 @@ function Navbar() {
         </div>
 
         <div className="navbar__actions">
-          <Link to="/dashboard" className="navbar__dashboard">
+          <Link to="/Dashboard" className="navbar__dashboard">
             Dashboard
           </Link>
         </div>
