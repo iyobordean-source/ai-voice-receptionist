@@ -1,309 +1,251 @@
-/* =========================================================
+/* ========================================
    NAVBAR
-   ========================================================= */
+======================================== */
 
 .navbar {
-  position: absolute;
-  z-index: 100;
+  position: fixed;
   top: 0;
   left: 0;
-  right: 0;
   width: 100%;
+  z-index: 1000;
+  padding: 18px 0;
+  pointer-events: none;
 }
 
 .navbar__inner {
-  position: relative;
-  min-height: 82px;
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+
+  pointer-events: auto;
 }
 
-/* BRAND */
+/* ========================================
+   BRAND
+======================================== */
 
 .navbar__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  color: #f4f4f0;
+  color: #f5f5f2;
   text-decoration: none;
 
-  font-size: 13px;
+  font-size: 0.85rem;
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 
   white-space: nowrap;
 }
 
-.navbar__mark {
-  position: relative;
-
-  width: 22px;
-  height: 22px;
-
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 3px;
-}
-
-.navbar__mark span {
-  display: block;
-  border: 1px solid rgba(120, 224, 143, 0.7);
-  border-radius: 3px;
-}
-
-.navbar__mark span:nth-child(1) {
-  background: rgba(120, 224, 143, 0.12);
-}
-
-.navbar__mark span:nth-child(4) {
-  background: rgba(120, 224, 143, 0.28);
-}
-
-/* DESKTOP LINKS */
+/* ========================================
+   LINKS
+======================================== */
 
 .navbar__links {
   display: flex;
   align-items: center;
   gap: 34px;
+  margin-left: auto;
+  margin-right: 34px;
 }
 
-.navbar__links a,
-.navbar__login {
-  color: #858582;
+.navbar__links a {
+  position: relative;
+
+  color: #777773;
   text-decoration: none;
-  font-size: 12px;
+
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 
   transition:
-    color 180ms ease,
-    opacity 180ms ease;
+    color 0.25s ease,
+    opacity 0.25s ease;
 }
 
-.navbar__links a:hover,
-.navbar__login:hover {
-  color: #f4f4f0;
+.navbar__links a:hover {
+  color: #f5f5f2;
 }
 
-/* DESKTOP ACTIONS */
+/* ========================================
+   DASHBOARD
+======================================== */
 
 .navbar__actions {
   display: flex;
   align-items: center;
-  gap: 20px;
 }
 
-.navbar__cta {
+.navbar__dashboard {
   display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  min-height: 38px;
-  padding: 0 17px;
+  min-height: 36px;
+  padding: 0 16px;
 
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 999px;
 
-  background: #f4f4f0;
-  color: #050505;
+  color: #f5f5f2;
+  background: rgba(255, 255, 255, 0.04);
 
   text-decoration: none;
-  font-size: 12px;
+
+  font-size: 0.73rem;
   font-weight: 500;
+  letter-spacing: 0.01em;
 
   transition:
-    transform 180ms ease,
-    background-color 180ms ease;
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
 }
 
-.navbar__cta:hover {
+.navbar__dashboard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-1px);
 }
 
-/* MOBILE MENU BUTTON */
+/* ========================================
+   MOBILE MENU BUTTON
+======================================== */
 
 .navbar__menu {
   display: none;
 
-  width: 42px;
-  height: 42px;
+  width: 38px;
+  height: 38px;
 
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
+  border: 0;
 
-  background: rgba(8, 8, 8, 0.8);
+  background: transparent;
+  cursor: pointer;
 
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 5px;
-
-  cursor: pointer;
+  gap: 6px;
 }
 
 .navbar__menu span {
   display: block;
-  width: 15px;
+
+  width: 19px;
   height: 1px;
-  background: #f4f4f0;
+
+  background: #f5f5f2;
 
   transition:
-    transform 180ms ease,
-    opacity 180ms ease;
+    transform 0.25s ease,
+    opacity 0.25s ease;
 }
 
-.navbar__menu--open span:first-child {
-  transform: translateY(3px) rotate(45deg);
-}
-
-.navbar__menu--open span:last-child {
-  transform: translateY(-3px) rotate(-45deg);
-}
-
-/* Hidden desktop-only mobile actions */
-
-.navbar__mobile-actions {
-  display: none;
-}
-
-/* =========================================================
+/* ========================================
    MOBILE
-   ========================================================= */
+======================================== */
 
 @media (max-width: 700px) {
   .navbar {
-    position: absolute;
+    padding: 16px 0;
   }
 
   .navbar__inner {
-    width: calc(100% - 32px);
-    min-height: 72px;
+    width: calc(100% - 36px);
   }
 
-  .navbar__brand-text {
-    max-width: 155px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .navbar__brand {
+    font-size: 0.8rem;
   }
 
-  /* Hide desktop navigation */
+  .navbar__menu {
+    display: flex;
+    position: relative;
+    z-index: 1002;
+  }
+
+  .navbar__links {
+    position: absolute;
+    top: 62px;
+    left: 18px;
+    right: 18px;
+
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+
+    margin: 0;
+    padding: 18px;
+
+    background: rgba(8, 8, 8, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .navbar__links.is-open {
+    display: flex;
+  }
+
+  .navbar__links a {
+    padding: 14px 4px;
+    font-size: 0.82rem;
+  }
+
   .navbar__actions {
     display: none;
   }
 
-  /* Hamburger on RIGHT */
-  .navbar__menu {
-    display: flex;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 102;
+  /* Hamburger → X */
+  .navbar__menu.is-open span:first-child {
+    transform: translateY(3.5px) rotate(45deg);
   }
 
-  /* Dropdown */
-
-  .navbar__links {
-    position: absolute;
-
-    top: 66px;
-    left: 0;
-    right: 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-
-    gap: 0;
-
-    padding: 10px;
-
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 18px;
-
-    background: rgba(8, 8, 8, 0.97);
-
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-
-    pointer-events: none;
-
-    transition:
-      opacity 160ms ease,
-      transform 160ms ease,
-      visibility 160ms ease;
+  .navbar__menu.is-open span:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
   }
 
-  .navbar__links--open {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    pointer-events: auto;
-  }
+  /* Dashboard inside mobile menu */
+  .navbar__links::after {
+    content: "Dashboard";
 
-  .navbar__links > a {
     display: flex;
     align-items: center;
-
-    min-height: 48px;
-    padding: 0 14px;
-
-    border-radius: 10px;
-
-    color: #a4a49f;
-    font-size: 13px;
-  }
-
-  .navbar__links > a:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: #f4f4f0;
-  }
-
-  .navbar__mobile-actions {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 8px;
+    justify-content: center;
 
     margin-top: 8px;
-    padding-top: 10px;
+    min-height: 40px;
 
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-  }
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 999px;
 
-  .navbar__mobile-actions .navbar__login,
-  .navbar__mobile-actions .navbar__cta {
-    min-height: 46px;
-    justify-content: center;
-  }
+    color: #f5f5f2;
+    background: rgba(255, 255, 255, 0.04);
 
-  .navbar__mobile-actions .navbar__login {
-    display: flex;
-    align-items: center;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
-
-    color: #a4a49f;
-  }
-
-  .navbar__mobile-actions .navbar__cta {
-    display: flex;
+    font-size: 0.76rem;
   }
 }
 
-/* =========================================================
+/* ========================================
    SMALL PHONES
-   ========================================================= */
+======================================== */
 
 @media (max-width: 390px) {
   .navbar__inner {
-    width: calc(100% - 24px);
+    width: calc(100% - 28px);
   }
 
-  .navbar__brand-text {
-    max-width: 130px;
-    font-size: 12px;
+  .navbar__brand {
+    font-size: 0.76rem;
+  }
+
+  .navbar__links {
+    left: 14px;
+    right: 14px;
   }
 }
