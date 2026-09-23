@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Vapi from "@vapi-ai/web";
 import "./Dashboard.css";
+
+const vapiPublicKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
+const vapiAssistantId = import.meta.env.VITE_VAPI_ASSISTANT_ID;
 
 const transcript = [
   {
@@ -49,12 +53,127 @@ const waveform = [
 ];
 
 function Dashboard() {
-  const [isListening, setIsListening] = useState(false);
+  const [callStatus, setCallStatus] = useState("idle");
+  const [callError, setCallError] = useState("");
   const [activeSection, setActiveSection] = useState("Overview");
+  const vapiRef = useRef(null);
+  const callStatusRef = useRef("idle");
 
-  const handleTalk = () => {
-    setIsListening((current) => !current);
+  const updateCallStatus = useCallback((status, errorMessage = "") => {
+    callStatusRef.current = status;
+    setCallStatus(status);
+    setCallError(errorMessage);
+  }, []);
+
+  useEffect(() => {
+    if (!vapiPublicKey) return undefined;
+
+    const vapi = new Vapi(vapiPublicKey);
+    vapiRef.current = vapi;
+
+    const handleCallStart = () => updateCallStatus("active");
+    const handleCallEnd = () => updateCallStatus("ended");
+    const handleCallError = () =>
+      updateCallStatus(
+        "error",
+        "Call failed. Check microphone access and Vapi setup."
+      );
+
+    vapi.on("call-start", handleCallStart);
+    vapi.on("call-end", handleCallEnd);
+    vapi.on("call-start-failed", handleCallError);
+    vapi.on("error", handleCallError);
+
+    return () => {
+      vapi.removeListener("call-start", handleCallStart);
+      vapi.removeListener("call-end", handleCallEnd);
+      vapi.removeListener("call-start-failed", handleCallError);
+      vapi.removeListener("error", handleCallError);
+
+      if (vapiRef.current === vapi) vapiRef.current = null;
+      void vapi.stop().catch(() => {});
+    };
+  }, [updateCallStatus]);
+
+  const handleTalk = async () => {
+    const vapi = vapiRef.current;
+
+    if (callStatusRef.current === "connecting") return;
+
+    if (callStatusRef.current === "active") {
+      if (!vapi) return;
+
+      try {
+        await vapi.stop();
+        if (vapiRef.current === vapi && callStatusRef.current === "active") {
+          updateCallStatus("ended");
+        }
+      } catch {
+        if (vapiRef.current === vapi) {
+          updateCallStatus("error", "Could not end the call. Please try again.");
+        }
+      }
+
+      return;
+    }
+
+    if (!vapiPublicKey || !vapiAssistantId || !vapi) {
+      updateCallStatus(
+        "error",
+        "Set VITE_VAPI_PUBLIC_KEY and VITE_VAPI_ASSISTANT_ID in .env.local, then restart the dev server."
+      );
+      return;
+    }
+
+    updateCallStatus("connecting");
+
+    try {
+      const call = await vapi.start(vapiAssistantId);
+
+      if (vapiRef.current !== vapi) return;
+      if (!call && callStatusRef.current === "connecting") {
+        updateCallStatus("error", "Vapi could not start the call.");
+      }
+    } catch {
+      if (vapiRef.current === vapi) {
+        updateCallStatus(
+          "error",
+          "Call failed. Check microphone access and Vapi setup."
+        );
+      }
+    }
   };
+
+  const isListening = callStatus === "active";
+  const isConnecting = callStatus === "connecting";
+  const callStatusLabel = {
+    idle: "Ready to handle calls",
+    connecting: "Connecting...",
+    active: "Listening...",
+    ended: "Call ended",
+    error: "Connection error",
+  }[callStatus];
+  const callStatusMessage = {
+    idle: "Talk to your AI receptionist",
+    connecting: "Connecting to your AI receptionist",
+    active: "Listening for your request",
+    ended: "Call ended. Tap to start again.",
+    error: callError || "Call failed. Check Vapi setup or microphone access.",
+  }[callStatus];
+  const callStatusHint = {
+    idle: "TAP TO TALK",
+    connecting: "CONNECTING",
+    active: "TAP TO END",
+    ended: "TAP TO RESTART",
+    error: "TAP TO RETRY",
+  }[callStatus];
+  const callStatusTime = {
+    idle: "READY",
+    connecting: "CONNECTING",
+    active: "LIVE",
+    ended: "ENDED",
+    error: "ERROR",
+  }[callStatus];
 
   return (
     <div className="dashboard">
@@ -132,13 +251,13 @@ function Dashboard() {
                 />
 
                 <span>
-                  {isListening ? "Listening..." : "Ready to handle calls"}
+                  {callStatusLabel}
                 </span>
               </div>
             </div>
 
             <span className="dashboard__voice-time">
-              LIVE
+              {callStatusTime}
             </span>
           </div>
 
@@ -169,9 +288,13 @@ function Dashboard() {
                 className="dashboard__talk-button"
                 type="button"
                 onClick={handleTalk}
+                disabled={isConnecting}
+                aria-busy={isConnecting}
                 aria-label={
                   isListening
-                    ? "Stop listening"
+                    ? "End Vapi call"
+                    : isConnecting
+                      ? "Connecting to Vapi"
                     : "Talk to AI receptionist"
                 }
               >
@@ -184,13 +307,11 @@ function Dashboard() {
 
           <div className="dashboard__voice-bottom">
             <span>
-              {isListening
-                ? "Listening for your request"
-                : "Talk to your AI receptionist"}
+              {callStatusMessage}
             </span>
 
             <span className="dashboard__voice-hint">
-              {isListening ? "TAP TO STOP" : "TAP TO TALK"}
+              {callStatusHint}
             </span>
           </div>
         </section>
