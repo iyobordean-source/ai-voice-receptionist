@@ -209,7 +209,7 @@ function Landing() {
               </p>
 
               <div className="hero__actions">
-                <Link to="/Dashboard" className="cta-button">
+                <Link to="/dashboard" className="cta-button">
                   Get started
                 </Link>
 
@@ -441,7 +441,7 @@ function Landing() {
               <span> a voice that's always on.</span>
             </h2>
 
-            <Link to="/signup" className="cta-button">
+            <Link to="/dashboard" className="cta-button">
               Get started
             </Link>
           </div>
