@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import VapiModule from "@vapi-ai/web";
+import { supabase } from "../lib/supabase";
 import "./Dashboard.css";
 
 const vapiPublicKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
@@ -24,46 +25,80 @@ const transcript = [
   },
 ];
 
-const activity = [
-  {
-    time: "10:42 AM",
-    type: "Order created",
-    detail: "2× Jollof Rice · 1× Chicken",
-  },
-  {
-    time: "10:38 AM",
-    type: "Appointment booked",
-    detail: "Sarah M. · 2:00 PM",
-  },
-  {
-    time: "10:31 AM",
-    type: "Question answered",
-    detail: "Business opening hours",
-  },
-  {
-    time: "10:24 AM",
-    type: "Customer captured",
-    detail: "David O.",
-  },
-];
-
 const waveform = [
   18, 35, 58, 28, 72, 44, 25, 64, 42,
   78, 34, 56, 24, 68, 40, 60, 30,
 ];
 
+function getOrderCustomer(order) {
+  return Array.isArray(order.customers)
+    ? order.customers[0]
+    : order.customers;
+}
+
+function formatOrderItems(items = []) {
+  return items
+    .map(({ item_name, quantity }) => `${quantity}× ${item_name}`)
+    .join(" · ");
+}
+
+function formatOrderTime(createdAt) {
+  if (!createdAt) return "";
+
+  const date = new Date(createdAt);
+  return Number.isNaN(date.getTime())
+    ? ""
+    : date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}
+
 function Dashboard() {
   const [callStatus, setCallStatus] = useState("idle");
   const [callError, setCallError] = useState("");
   const [activeSection, setActiveSection] = useState("Overview");
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(true);
+  const [ordersError, setOrdersError] = useState("");
   const vapiRef = useRef(null);
   const callStatusRef = useRef("idle");
+  const ordersRequestRef = useRef(0);
 
   const updateCallStatus = useCallback((status, errorMessage = "") => {
     callStatusRef.current = status;
     setCallStatus(status);
     setCallError(errorMessage);
   }, []);
+
+  const refreshOrders = useCallback(async () => {
+    const requestId = ++ordersRequestRef.current;
+    setOrdersLoading(true);
+    setOrdersError("");
+
+    try {
+      const { data, error } = await supabase
+        .from("orders")
+        .select(
+          "id, status, created_at, customers(name, phone), order_items(item_name, quantity)"
+        )
+        .order("created_at", { ascending: false })
+        .limit(5);
+
+      if (error) throw error;
+      if (requestId === ordersRequestRef.current) setOrders(data ?? []);
+    } catch (error) {
+      if (requestId === ordersRequestRef.current) {
+        setOrdersError(error?.message || "Could not load orders.");
+      }
+    } finally {
+      if (requestId === ordersRequestRef.current) setOrdersLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshOrders();
+    return () => {
+      ordersRequestRef.current += 1;
+    };
+  }, [refreshOrders]);
 
   useEffect(() => {
     if (!vapiPublicKey) return undefined;
@@ -73,7 +108,10 @@ function Dashboard() {
     vapiRef.current = vapi;
 
     const handleCallStart = () => updateCallStatus("active");
-    const handleCallEnd = () => updateCallStatus("ended");
+    const handleCallEnd = () => {
+      updateCallStatus("ended");
+      void refreshOrders();
+    };
     const handleCallError = () =>
       updateCallStatus(
         "error",
@@ -94,7 +132,26 @@ function Dashboard() {
       if (vapiRef.current === vapi) vapiRef.current = null;
       void vapi.stop().catch(() => {});
     };
-  }, [updateCallStatus]);
+  }, [refreshOrders, updateCallStatus]);
+
+  const latestOrder = orders[0];
+  const latestOrderCustomer = latestOrder
+    ? getOrderCustomer(latestOrder)
+    : null;
+  const recentActivity = orders.map((order) => {
+    const customer = getOrderCustomer(order);
+    const items = Array.isArray(order.order_items) ? order.order_items : [];
+    const orderSummary = formatOrderItems(items);
+
+    return {
+      id: order.id,
+      time: formatOrderTime(order.created_at),
+      type: "Order created",
+      detail: [customer?.name || "Unknown customer", orderSummary]
+        .filter(Boolean)
+        .join(" · "),
+    };
+  });
 
   const handleTalk = async () => {
     const vapi = vapiRef.current;
@@ -402,7 +459,11 @@ function Dashboard() {
 
               <span className="dashboard__action-status">
                 <i />
-                COMPLETED
+                {ordersLoading
+                  ? "LOADING"
+                  : ordersError
+                    ? "UNAVAILABLE"
+                    : latestOrder?.status?.toUpperCase() || "NO ORDERS"}
               </span>
             </div>
 
@@ -420,25 +481,48 @@ function Dashboard() {
 
           <div className="dashboard__action-result">
             <div className="dashboard__result-top">
-              <span>ORDER CREATED</span>
-              <span>10:42 AM</span>
+              <span>
+                {ordersLoading
+                  ? "LOADING ORDERS"
+                  : ordersError
+                    ? "ORDERS UNAVAILABLE"
+                    : latestOrder
+                      ? "ORDER CREATED"
+                      : "NO ORDERS"}
+              </span>
+              <span>{latestOrder ? formatOrderTime(latestOrder.created_at) : ""}</span>
             </div>
 
             <div className="dashboard__result-items">
-              <div>
-                <span>02</span>
-                <strong>Jollof Rice</strong>
-              </div>
-
-              <div>
-                <span>01</span>
-                <strong>Chicken</strong>
-              </div>
+              {ordersLoading ? (
+                <div>
+                  <strong>Loading recent orders…</strong>
+                </div>
+              ) : ordersError ? (
+                <div>
+                  <strong>Could not load orders: {ordersError}</strong>
+                </div>
+              ) : latestOrder ? (
+                (latestOrder.order_items ?? []).map((item, index) => (
+                  <div key={`${latestOrder.id}-${index}`}>
+                    <span>{String(item.quantity).padStart(2, "0")}</span>
+                    <strong>{item.item_name}</strong>
+                  </div>
+                ))
+              ) : (
+                <div>
+                  <strong>No orders yet.</strong>
+                </div>
+              )}
             </div>
 
             <div className="dashboard__result-customer">
               <span>CUSTOMER</span>
-              <strong>David O.</strong>
+              <strong>
+                {ordersLoading
+                  ? "Loading…"
+                  : latestOrderCustomer?.name || (latestOrder ? "Unknown customer" : "—")}
+              </strong>
             </div>
           </div>
         </section>
@@ -456,10 +540,34 @@ function Dashboard() {
             </div>
 
             <div className="dashboard__activity">
-              {activity.map((item, index) => (
+              {ordersLoading ? (
+                <div className="dashboard__activity-item">
+                  <span className="dashboard__activity-time">…</span>
+                  <div>
+                    <strong>Loading recent orders</strong>
+                    <span>Please wait.</span>
+                  </div>
+                </div>
+              ) : ordersError ? (
+                <div className="dashboard__activity-item">
+                  <span className="dashboard__activity-time">ERROR</span>
+                  <div>
+                    <strong>Could not load orders</strong>
+                    <span>{ordersError}</span>
+                  </div>
+                </div>
+              ) : recentActivity.length === 0 ? (
+                <div className="dashboard__activity-item">
+                  <span className="dashboard__activity-time">—</span>
+                  <div>
+                    <strong>No orders yet</strong>
+                    <span>New orders will appear here.</span>
+                  </div>
+                </div>
+              ) : recentActivity.map((item) => (
                 <div
                   className="dashboard__activity-item"
-                  key={index}
+                  key={item.id}
                 >
                   <span className="dashboard__activity-time">
                     {item.time}
