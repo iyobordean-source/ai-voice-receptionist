@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import Vapi from "@vapi-ai/web";
+import VapiModule from "@vapi-ai/web";
 import "./Dashboard.css";
 
 const vapiPublicKey = import.meta.env.VITE_VAPI_PUBLIC_KEY;
@@ -68,6 +68,7 @@ function Dashboard() {
   useEffect(() => {
     if (!vapiPublicKey) return undefined;
 
+    const Vapi = VapiModule.default;
     const vapi = new Vapi(vapiPublicKey);
     vapiRef.current = vapi;
 
